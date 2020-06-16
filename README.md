@@ -2,8 +2,8 @@
 Creating an Access Point on an ESP32 that will allow the user to select an available WIFI network they want the ESP to connect to.
 
 ## How it works
-1. The device starts up and initialises a Access Point.
-2. The device waits for 30 seconds for a connection from a client
+1. The ESP32 starts up and initialises a Access Point.
+2. The ESP32 waits for 30 seconds for a connection from a client
 3. If a connection is received the count down stops, and a network scan is performed (to see what WIFI networks are available)
 4. Default Access Point URL is 172.16.1.1
 5. Select the Network SSID you wish to connect to from the drop down list
