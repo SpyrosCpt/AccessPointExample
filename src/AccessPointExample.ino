@@ -5,7 +5,7 @@
 
 #define EEPROM_SIZE         44
 #define ARRAY_SIZE          256
-#define DEBUG               0
+#define DEBUG               1
 
 WiFiClient wifiClient;
 
@@ -148,7 +148,7 @@ void setup()
   
   EEPROM.begin(EEPROM_SIZE);               //initailize ESP eeprom
 
-  delay(100);
+  delay(1000);
   temp = DoAccessPointSetup();             //setup access point 
   
   DoWifiSetup(temp);                       //Do wifi setup

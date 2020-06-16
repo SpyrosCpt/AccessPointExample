@@ -8,7 +8,7 @@ void ScanForWifiNetworks(void)
   int n = 0;
   int i = 0;
   n =  WiFi.scanNetworks();
-  delay(100);
+  //delay(100);
   if(n == 0) { if(DEBUG) Serial.println("No networks found"); }
   else
   {
@@ -21,7 +21,7 @@ void ScanForWifiNetworks(void)
     if(DEBUG) Serial.println();
   }
   numNetworks = n;
-  delay(100);
+  //delay(100);
 }
 /**
   * @brief  This sets up the ESP32 as an access point
@@ -40,7 +40,9 @@ byte DoAccessPointSetup(void)
   AccessPointSetup();                      //setup access point
  
   GotDetails = ReadEEPROM(0);              //check if there is a SSID and Password (1= yes, 0 = no)
-  
+
+  ScanForWifiNetworks();
+    
   if(GotDetails) AccessPointTimer = 30000; //30 seconds if there is a SSID and password
   else AccessPointTimer = 120000;          //120 seconds if there isn't (for 1st time connection)
   
@@ -57,10 +59,8 @@ byte DoAccessPointSetup(void)
   }
   if(AccessPointConnection)                //wait until the user finishes inputting wifi details
   {
-    if(DEBUG) Serial.println("Got  Connection!");
-    delay(1000);
-    ScanForWifiNetworks();
-    delay(1000);
+    if(DEBUG) Serial.println("- Got Connection!");
+    
     while(AccessPointConnection) server.handleClient(); //get wifi details via AP
     delay(1000);
   }
@@ -75,9 +75,9 @@ void AccessPointSetup(void)
   int i = 0;
   
   WiFi.softAP(AccessPointName);
+  delay(1000);  
   WiFi.softAPConfig(local_ip, gateway, subnet);      //these are configured at the top of the main file (172.16.1.1)
-  
-  delay(100);                                        //this delay is important, does not work without it, do not remove!
+  delay(1000);                                        //this delay is important, does not work without it, do not remove!
   
   server.on("/", handle_OnConnect);
   server.on("/action_page.php", handle_submit);
@@ -89,10 +89,11 @@ void AccessPointSetup(void)
 
 void handle_OnConnect()  //this gets called when a device connects
 {
-  delay(2000);
+  //WifiTimer = 2000;
+  //while(WifiTimer)
   server.send(200, "text/html", SendHTML(false)); 
   AccessPointConnection = 1;
-  delay(2000);
+ // delay(50);
 }
 
 void handle_submit()    //this gets called when a user presses "submit"
@@ -102,7 +103,6 @@ void handle_submit()    //this gets called when a user presses "submit"
   byte n = 0;
   byte CheckSumArr[EEPROM_SIZE];
 
-  delay(100);
   ssid = server.arg(0); 
   pwd = server.arg(1);
 
@@ -117,7 +117,8 @@ void handle_submit()    //this gets called when a user presses "submit"
   server.send(200, "text/html", SendHTML(true)); 
   WIFI_SSID = ssid;
   WIFI_PASSWORD = pwd;
-
+  
+  Serial.println();
   if(DEBUG) Serial.println("Storing new Wifi details in EEPROM.. ");
 
   for(n = 0; n < EEPROM_SIZE; n++) CheckSumArr[n] = 0;  //clear the array
@@ -134,14 +135,16 @@ void handle_submit()    //this gets called when a user presses "submit"
   CheckSumArr[43] = Checksum(CheckSumArr, EEPROM_SIZE - 1);
   for(n = 0; n < EEPROM_SIZE; n++) WriteEEPROM(n, CheckSumArr[n]); 
 
-  delay(2000);
+ // delay(2000);
   
   server.stop();
   server.close();
   WiFi.softAPdisconnect();
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
+  Serial.println();
   Serial.println("HTTP server stopped");
+  Serial.println();
   AccessPointConnection=0;
 }
 
@@ -158,7 +161,6 @@ void handle_NotFound()                //this gets called when something goes wri
 String SendHTML(uint8_t submit)
 { 
   int i = 0;
-  
   String ptr = "<!DOCTYPE html> <html>\n";
   ptr +="<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\">\n";
   ptr +="<title>Wifi Setup</title>\n";
@@ -186,7 +188,6 @@ String SendHTML(uint8_t submit)
         ptr += "</option>";
      }
      ptr += "</select><br><br>";
-     //ptr += "<input type=""submit">"";
      ptr +="<label for=""pwd"">Password:</label><br>";
      ptr +="<input type=""password"" id=""pwd"" name=""pwd""><br><br>";
      ptr +="<input type=""submit"" value=""Submit"">";
@@ -196,5 +197,6 @@ String SendHTML(uint8_t submit)
    
    ptr +="</body>\n";
    ptr +="</html>\n";
+   
    return ptr;
 }
