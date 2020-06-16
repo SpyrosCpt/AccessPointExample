@@ -7,8 +7,8 @@ void ScanForWifiNetworks(void)
 {
   int n = 0;
   int i = 0;
+  
   n =  WiFi.scanNetworks();
-  //delay(100);
   if(n == 0) { if(DEBUG) Serial.println("No networks found"); }
   else
   {
@@ -21,7 +21,6 @@ void ScanForWifiNetworks(void)
     if(DEBUG) Serial.println();
   }
   numNetworks = n;
-  //delay(100);
 }
 /**
   * @brief  This sets up the ESP32 as an access point
@@ -89,11 +88,8 @@ void AccessPointSetup(void)
 
 void handle_OnConnect()  //this gets called when a device connects
 {
-  //WifiTimer = 2000;
-  //while(WifiTimer)
   server.send(200, "text/html", SendHTML(false)); 
   AccessPointConnection = 1;
- // delay(50);
 }
 
 void handle_submit()    //this gets called when a user presses "submit"
@@ -134,8 +130,6 @@ void handle_submit()    //this gets called when a user presses "submit"
 
   CheckSumArr[43] = Checksum(CheckSumArr, EEPROM_SIZE - 1);
   for(n = 0; n < EEPROM_SIZE; n++) WriteEEPROM(n, CheckSumArr[n]); 
-
- // delay(2000);
   
   server.stop();
   server.close();
@@ -190,7 +184,7 @@ String SendHTML(uint8_t submit)
      ptr += "</select><br><br>";
      ptr +="<label for=""pwd"">Password:</label><br>";
      ptr +="<input type=""password"" id=""pwd"" name=""pwd""><br><br>";
-     ptr +="<input type=""submit"" value=""Submit"">";
+     ptr +="<input type=""submit"" value=""Connect"">";
      ptr +="<input type=""reset"">";
      ptr +="</form>"; 
    }
