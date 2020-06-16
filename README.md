@@ -1,5 +1,5 @@
 # AccessPointExample
-Creating an Access Point on an ESP32 that will allow the user to select an available WIFI network they want the ESP32 to connect to.
+Creates an Access Point on an ESP32 that will allow the user to select an available WIFI network they want the ESP32 to connect to.
 
 ## How it works
 1. The ESP32 starts up and initialises a Access Point.
