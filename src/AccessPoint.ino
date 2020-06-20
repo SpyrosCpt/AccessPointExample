@@ -1,4 +1,4 @@
-#define NUM_NETWORKS 10
+#define NUM_NETWORKS 20
 
 String AvailableNetworks[NUM_NETWORKS];
 int numNetworks = 0;
@@ -7,8 +7,9 @@ void ScanForWifiNetworks(void)
 {
   int n = 0;
   int i = 0;
-  
+  delay(200);
   n =  WiFi.scanNetworks();
+  delay(200);
   if(n == 0) { if(DEBUG) Serial.println("No networks found"); }
   else
   {
@@ -17,7 +18,7 @@ void ScanForWifiNetworks(void)
     if(DEBUG) Serial.print(n);
     if(DEBUG) Serial.println(" Networks");
 
-    for(i = 0; i < n; i++) { AvailableNetworks[i] = WiFi.SSID(i); }
+    for(i = 0; i < NUM_NETWORKS; i++) { AvailableNetworks[i] = WiFi.SSID(i); }
     if(DEBUG) Serial.println();
   }
   numNetworks = n;
@@ -63,7 +64,19 @@ byte DoAccessPointSetup(void)
     while(AccessPointConnection) server.handleClient(); //get wifi details via AP
     delay(1000);
   }
-  else { if(DEBUG){ Serial.println("No Connection!"); } if(DEBUG) { Serial.println(); } }
+  else 
+  { 
+    if(DEBUG) Serial.println("No Connection!");  
+    if(DEBUG)  Serial.println(); 
+    server.stop();
+    server.close();
+    WiFi.softAPdisconnect();
+    WiFi.mode(WIFI_STA);
+    WiFi.disconnect();
+    Serial.println();
+    Serial.println("HTTP server stopped");
+    Serial.println();
+  }
 
   return gotAccessPointConnection;
 }
@@ -111,6 +124,8 @@ void handle_submit()    //this gets called when a user presses "submit"
   if(DEBUG) Serial.println(pwd);
   
   server.send(200, "text/html", SendHTML(true)); 
+  delay(1000);
+  
   WIFI_SSID = ssid;
   WIFI_PASSWORD = pwd;
   

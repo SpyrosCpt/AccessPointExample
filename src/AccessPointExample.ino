@@ -148,9 +148,9 @@ void setup()
   
   EEPROM.begin(EEPROM_SIZE);               //initailize ESP eeprom
 
-  delay(1000);
+  delay(100);
   temp = DoAccessPointSetup();             //setup access point 
-  
+  delay(1000);
   DoWifiSetup(temp);                       //Do wifi setup
 }
 
