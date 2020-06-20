@@ -121,6 +121,11 @@ byte CheckEEPROM(void)
   return 0;
 }
 
+/**
+  * @brief  This function checks the WIFI connection status every 5 seconds
+  * @param  wifiReconnectCoun - times the wifi has tried to reconnect if the connection has been lost
+  * @retval none
+  */
 void DoTimerStuff(byte wifiReconnectCount)
 {
   byte wifiStatus = 0;

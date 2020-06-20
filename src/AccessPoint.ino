@@ -3,6 +3,11 @@
 String AvailableNetworks[NUM_NETWORKS];
 int numNetworks = 0;
 
+/**
+  * @brief  This function scans for available WIFI netorks and places them in a global array to be used in the HTML later
+  * @param  none
+  * @retval none
+  */
 void ScanForWifiNetworks(void)
 {
   int n = 0;
@@ -80,6 +85,12 @@ byte DoAccessPointSetup(void)
 
   return gotAccessPointConnection;
 }
+
+/**
+  * @brief  This function sets up the ESP in access point mode
+  * @param  none
+  * @retval none
+  */
 void AccessPointSetup(void) 
 {
   const char* AccessPointName = "ESP32_Access_Point"; //change to what ever you want the access point name to be;
@@ -99,12 +110,22 @@ void AccessPointSetup(void)
   if(DEBUG) Serial.println("Device has started in AP mode");
 }
 
+/**
+  * @brief  This function handles what happens when a client connects
+  * @param  none
+  * @retval none
+  */
 void handle_OnConnect()  //this gets called when a device connects
 {
   server.send(200, "text/html", SendHTML(false)); 
   AccessPointConnection = 1;
 }
 
+/**
+  * @brief  This function handles what happens when a user presses submit
+  * @param  none
+  * @retval none
+  */
 void handle_submit()    //this gets called when a user presses "submit"
 {
   String ssid = "";
@@ -157,6 +178,11 @@ void handle_submit()    //this gets called when a user presses "submit"
   AccessPointConnection=0;
 }
 
+/**
+  * @brief  This function handles a page that does not exist
+  * @param  none
+  * @retval none
+  */
 void handle_NotFound()                //this gets called when something goes wring and a page isnt found
 {
   server.send(404, "text/plain");
