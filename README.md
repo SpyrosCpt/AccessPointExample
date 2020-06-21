@@ -21,5 +21,5 @@ Flash Mode: QIO\
 Flash Size: 4MB (32Mb)\
 Partition Scheme: HUGE APP (3MB No OTA/1MB SPIFFS)\
 Core Debug Level: None\
-PSRAM: Disabled\
+PSRAM: Disabled
 
