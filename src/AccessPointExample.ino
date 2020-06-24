@@ -132,10 +132,14 @@ void DoTimerStuff(byte wifiReconnectCount)
   
   if(!WifiTimer) 
   {
-    wifiCount = CheckWifi(wifiCount);
     wifiStatus = CheckWifi(wifiReconnectCount);   
-    if(wifiStatus == 0) WifiTimer = 30;
-    else WifiTimer = 5; 
+    if(DEBUG)
+    {
+      if(wifiStatus) Serial.println("WIFI OK!");
+      else Serial.println("WIFI Disconnected!");
+    }
+    if(wifiStatus == 0) WifiTimer = 30000;
+    else WifiTimer = 5000; 
   }
 }
 void setup() 

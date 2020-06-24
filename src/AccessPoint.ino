@@ -12,13 +12,14 @@ void ScanForWifiNetworks(void)
 {
   int n = 0;
   int i = 0;
+  if(DEBUG) Serial.println();
+  if(DEBUG) Serial.println("Scanning for Available Networks..");
   delay(200);
   n =  WiFi.scanNetworks();
   delay(200);
   if(n == 0) { if(DEBUG) Serial.println("No networks found"); }
   else
   {
-    if(DEBUG) Serial.println();
     if(DEBUG) Serial.print("Found ");
     if(DEBUG) Serial.print(n);
     if(DEBUG) Serial.println(" Networks");
@@ -71,7 +72,7 @@ byte DoAccessPointSetup(void)
   }
   else 
   { 
-    if(DEBUG) Serial.println("No Connection!");  
+    if(DEBUG) Serial.println("- No Connection!");  
     if(DEBUG)  Serial.println(); 
     server.stop();
     server.close();
@@ -107,6 +108,9 @@ void AccessPointSetup(void)
   server.onNotFound(handle_NotFound);
   
   server.begin();
+  if(DEBUG) Serial.println();
+  if(DEBUG) Serial.println();
+  if(DEBUG) Serial.println();
   if(DEBUG) Serial.println("Device has started in AP mode");
 }
 

@@ -130,8 +130,10 @@ byte CheckWifi(byte wifiReconnectCount)
 
 void SignalStrength(long str)
 { 
-  if(str > -50)                           if(DEBUG) Serial.println(" - EXCELLENT!");
-  else if( (str <= -50) && (str > -60) )  if(DEBUG) Serial.println(" - GOOD!");
-  else if( (str <= -60) && (str > -70) )  if(DEBUG) Serial.println(" - FAIR!"); 
-  else if( str <= -70)                    if(DEBUG) Serial.println(" - WEAK!");
+  if(str > -50)                           { if(DEBUG) Serial.println(" - EXCELLENT!"); }
+  else if( (str <= -50) && (str > -60) )  { if(DEBUG) Serial.println(" - GOOD!"); }
+  else if( (str <= -60) && (str > -70) )  { if(DEBUG) Serial.println(" - FAIR!"); }
+  else if( str <= -70)                    { if(DEBUG) Serial.println(" - WEAK!"); }
+  else { if(DEBUG) Serial.println(" - SIGNAL ERR!"); }
+  if(DEBUG) Serial.println();
 }
